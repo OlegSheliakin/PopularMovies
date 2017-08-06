@@ -4,12 +4,13 @@ package home.oleg.popularmovies.presentation.list.presenter;
  * Created by Oleg on 15.04.2017.
  */
 
-public interface ListPresenter<VIEW> {
+public interface ListPresenter {
     void fetchMovies(Filter filter);
 
     enum Filter {
         TOP_RATED("top_rated"),
-        POPULAR("popular");
+        POPULAR("popular"),
+        FAVOURITE("favourite");
 
         private String value;
 
@@ -23,6 +24,8 @@ public interface ListPresenter<VIEW> {
                     return TOP_RATED;
                 case "popular":
                     return POPULAR;
+                case "favourite":
+                    return FAVOURITE;
                 default:
                     return POPULAR;
             }

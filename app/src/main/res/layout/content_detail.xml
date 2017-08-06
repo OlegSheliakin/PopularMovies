@@ -1,63 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/margin_small"
-    tools:context="home.oleg.popularmovies.presentation.detail.DetailActivity">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_poster"
-        android:layout_width="@dimen/width_iv_poster"
-        android:layout_height="@dimen/heigth_iv_poster"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:adjustViewBounds="false"
-        android:contentDescription="@string/image"
-        tools:src="@mipmap/ic_launcher"/>
-
-    <TextView
-        android:id="@+id/tv_original_title"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/iv_poster"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="3"
-        android:textSize="@dimen/text_size_big"
-        tools:text="Title"/>
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        tools:context="home.oleg.popularmovies.presentation.detail.DetailActivity">
 
-    <TextView
-        android:id="@+id/tv_release_at"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/tv_original_title"
-        android:layout_marginTop="@dimen/margin"
-        android:layout_toEndOf="@+id/iv_poster"
-        tools:text="Release date: 2017-06-12"/>
+        <ImageView
+            android:id="@+id/iv_poster"
+            android:layout_width="@dimen/width_iv_poster"
+            android:layout_height="@dimen/heigth_iv_poster"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tv_original_title"
+            android:layout_margin="@dimen/margin_small"
+            android:adjustViewBounds="false"
+            android:contentDescription="@string/image"
+            tools:src="@mipmap/ic_launcher" />
 
-    <RatingBar
-        android:id="@+id/rb_user_rating"
-        style="@style/Widget.AppCompat.RatingBar.Small"
+        <TextView
+            android:id="@+id/tv_original_title"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimary"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_big"
+            android:textStyle="bold"
+            tools:text="Title" />
+
+        <TextView
+            android:id="@+id/tv_release_at"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/iv_poster"
+            android:layout_below="@+id/tv_original_title"
+            android:layout_toEndOf="@+id/iv_poster"
+            tools:text="Release date: 2017-06-12" />
+
+        <RatingBar
+            android:id="@+id/rb_user_rating"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_release_at"
+            android:layout_marginEnd="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_toEndOf="@+id/iv_poster"
+            android:numStars="10"
+            android:stepSize=".5" />
+
+        <TextView
+            android:id="@+id/tv_post_synopsis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_poster"
+            android:layout_margin="@dimen/margin_small"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="Post synopsis" />
+
+        <include
+            android:id="@+id/layout_videos"
+            layout="@layout/layout_videos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_post_synopsis" />
+
+        <include
+            android:id="@+id/layout_reviews"
+            layout="@layout/layout_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_videos" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_favourite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_release_at"
-        android:layout_marginTop="@dimen/margin"
-        android:layout_toEndOf="@+id/iv_poster"
-        android:numStars="10"
-        android:stepSize=".5"/>
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_star_black_24dp"
+        app:fabSize="mini"
+        app:layout_anchor="@id/iv_poster"
+        app:layout_anchorGravity="bottom|right|end" />
 
-    <TextView
-        android:id="@+id/tv_post_synopsis"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_poster"
-        android:layout_marginTop="@dimen/margin_small"
-        tools:text="Post synopsis"/>
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -8,15 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import home.oleg.popularmovies.data.ActionWithException;
-import home.oleg.popularmovies.data.entities.Result;
-import home.oleg.popularmovies.domain.Action;
+import home.oleg.popularmovies.data.entities.MovieResponse;
 import home.oleg.popularmovies.domain.mappers.Mapper;
 
 /**
  * Created by Oleg on 15.04.2017.
  */
 
-public class JsonMapperResults implements Mapper<List<Result>, JSONObject> {
+public class JsonMapperResults implements Mapper<List<MovieResponse.Result>, JSONObject> {
 
     private static final String KEY_RESULTS = "results";
     private static final String KEY_SYNOPSIS = "overview";
@@ -33,7 +32,7 @@ public class JsonMapperResults implements Mapper<List<Result>, JSONObject> {
     private static final String KEY_VIDEO = "video";
     private static final String KEY_VOTE_COUNT = "vote_count";
 
-    public List<Result> map(JSONObject jsonObject) {
+    public List<MovieResponse.Result> map(JSONObject jsonObject) {
 
         if (!jsonObject.has(KEY_RESULTS)) return new ArrayList<>();
 
@@ -46,9 +45,9 @@ public class JsonMapperResults implements Mapper<List<Result>, JSONObject> {
 
         if (array == null) return new ArrayList<>();
 
-        List<Result> results = new ArrayList<>();
+        List<MovieResponse.Result> results = new ArrayList<>();
         for (int i = 0; i < array.length(); i++){
-            Result result = new Result();
+            MovieResponse.Result result = new MovieResponse.Result();
             try {
                 JSONObject object = array.getJSONObject(i);
                 tryToSet(object, KEY_SYNOPSIS, o -> result.setOverview(o.getString(KEY_SYNOPSIS)));

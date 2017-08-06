@@ -10,6 +10,8 @@ import java.util.Date;
  */
 
 public class MovieViewModel implements Parcelable {
+
+        private Integer id;
         private String originalTitle;
         private String imagePath;
         private String plotSynopsis;
@@ -22,6 +24,14 @@ public class MovieViewModel implements Parcelable {
 
         public void setOriginalTitle(String originalTitle) {
                 this.originalTitle = originalTitle;
+        }
+
+        public Integer getId() {
+                return id;
+        }
+
+        public void setId(Integer id) {
+                this.id = id;
         }
 
         public String getImagePath() {
@@ -56,45 +66,6 @@ public class MovieViewModel implements Parcelable {
                 this.releaseAt = releaseAt;
         }
 
-        @Override
-        public String toString() {
-                return "MovieViewModel{" +
-                        "originalTitle='" + originalTitle + '\'' +
-                        ", imagePath='" + imagePath + '\'' +
-                        ", plotSynopsis='" + plotSynopsis + '\'' +
-                        ", userRating=" + userRating +
-                        ", releaseAt='" + releaseAt + '\'' +
-                        '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-                if (this == o) return true;
-                if (o == null || getClass() != o.getClass()) return false;
-
-                MovieViewModel model = (MovieViewModel) o;
-
-                if (originalTitle != null ? !originalTitle.equals(model.originalTitle) : model.originalTitle != null)
-                        return false;
-                if (imagePath != null ? !imagePath.equals(model.imagePath) : model.imagePath != null)
-                        return false;
-                if (plotSynopsis != null ? !plotSynopsis.equals(model.plotSynopsis) : model.plotSynopsis != null)
-                        return false;
-                if (userRating != null ? !userRating.equals(model.userRating) : model.userRating != null)
-                        return false;
-                return releaseAt != null ? releaseAt.equals(model.releaseAt) : model.releaseAt == null;
-
-        }
-
-        @Override
-        public int hashCode() {
-                int result = originalTitle != null ? originalTitle.hashCode() : 0;
-                result = 31 * result + (imagePath != null ? imagePath.hashCode() : 0);
-                result = 31 * result + (plotSynopsis != null ? plotSynopsis.hashCode() : 0);
-                result = 31 * result + (userRating != null ? userRating.hashCode() : 0);
-                result = 31 * result + (releaseAt != null ? releaseAt.hashCode() : 0);
-                return result;
-        }
 
         @Override
         public int describeContents() {
@@ -103,6 +74,7 @@ public class MovieViewModel implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
+                dest.writeValue(this.id);
                 dest.writeString(this.originalTitle);
                 dest.writeString(this.imagePath);
                 dest.writeString(this.plotSynopsis);
@@ -114,6 +86,7 @@ public class MovieViewModel implements Parcelable {
         }
 
         protected MovieViewModel(Parcel in) {
+                this.id = (Integer) in.readValue(Integer.class.getClassLoader());
                 this.originalTitle = in.readString();
                 this.imagePath = in.readString();
                 this.plotSynopsis = in.readString();
@@ -132,4 +105,47 @@ public class MovieViewModel implements Parcelable {
                         return new MovieViewModel[size];
                 }
         };
+
+        @Override
+        public boolean equals(Object o) {
+                if (this == o) return true;
+                if (o == null || getClass() != o.getClass()) return false;
+
+                MovieViewModel that = (MovieViewModel) o;
+
+                if (id != null ? !id.equals(that.id) : that.id != null) return false;
+                if (originalTitle != null ? !originalTitle.equals(that.originalTitle) : that.originalTitle != null)
+                        return false;
+                if (imagePath != null ? !imagePath.equals(that.imagePath) : that.imagePath != null)
+                        return false;
+                if (plotSynopsis != null ? !plotSynopsis.equals(that.plotSynopsis) : that.plotSynopsis != null)
+                        return false;
+                if (userRating != null ? !userRating.equals(that.userRating) : that.userRating != null)
+                        return false;
+                return releaseAt != null ? releaseAt.equals(that.releaseAt) : that.releaseAt == null;
+
+        }
+
+        @Override
+        public int hashCode() {
+                int result = id != null ? id.hashCode() : 0;
+                result = 31 * result + (originalTitle != null ? originalTitle.hashCode() : 0);
+                result = 31 * result + (imagePath != null ? imagePath.hashCode() : 0);
+                result = 31 * result + (plotSynopsis != null ? plotSynopsis.hashCode() : 0);
+                result = 31 * result + (userRating != null ? userRating.hashCode() : 0);
+                result = 31 * result + (releaseAt != null ? releaseAt.hashCode() : 0);
+                return result;
+        }
+
+        @Override
+        public String toString() {
+                return "MovieViewModel{" +
+                        "id=" + id +
+                        ", originalTitle='" + originalTitle + '\'' +
+                        ", imagePath='" + imagePath + '\'' +
+                        ", plotSynopsis='" + plotSynopsis + '\'' +
+                        ", userRating=" + userRating +
+                        ", releaseAt='" + releaseAt + '\'' +
+                        '}';
+        }
 }

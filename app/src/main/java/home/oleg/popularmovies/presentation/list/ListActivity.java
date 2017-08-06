@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import home.oleg.popularmovies.R;
+import home.oleg.popularmovies.data.network.NetworkMovies;
 import home.oleg.popularmovies.domain.mappers.MovieModelMapper;
 import home.oleg.popularmovies.domain.usecases.GetMoviesUseCase;
 import home.oleg.popularmovies.presentation.BasicActivity;
@@ -41,7 +41,7 @@ public class ListActivity extends BasicActivity implements SwipeRefreshLayout.On
 
     private MovieAdapter adapter;
 
-    private ListPresenter<ListView> presenter;
+    private ListPresenter presenter;
 
     private Filter filter = POPULAR;
 
@@ -139,7 +139,7 @@ public class ListActivity extends BasicActivity implements SwipeRefreshLayout.On
     }
 
     private void setupPresenter() {
-        presenter = new ListPresenterImpl(this, new GetMoviesUseCase(), new MovieModelMapper());
+        presenter = new ListPresenterImpl(this, new GetMoviesUseCase(NetworkMovies.getInstance()), new MovieModelMapper());
     }
 
     private void checkInstanceState(Bundle savedInstanceState) {

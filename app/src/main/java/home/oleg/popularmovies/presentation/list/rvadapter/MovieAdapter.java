@@ -21,7 +21,7 @@ import home.oleg.popularmovies.presentation.model.MovieViewModel;
  * Created by Oleg on 15.04.2017.
  */
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHodler> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private ArrayList<MovieViewModel> items;
     private final MovieAdapterOnClickHandler clickHandler;
@@ -45,13 +45,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHodler> 
     }
 
     @Override
-    public ViewHodler onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_movie_item, parent, false);
-        return new ViewHodler(v, clickHandler);
+        return new ViewHolder(v, clickHandler);
     }
 
     @Override
-    public void onBindViewHolder(ViewHodler holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(items.get(position));
     }
 
@@ -68,13 +68,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHodler> 
         }
     }
 
-    static class ViewHodler extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         private Context context;
         private ImageView poster;
         private MovieAdapterOnClickHandler clickHandler;
 
-        ViewHodler(View itemView, @NonNull MovieAdapterOnClickHandler clickHandler) {
+        ViewHolder(View itemView, @NonNull MovieAdapterOnClickHandler clickHandler) {
             super(itemView);
             this.clickHandler = clickHandler;
             context = itemView.getContext();
