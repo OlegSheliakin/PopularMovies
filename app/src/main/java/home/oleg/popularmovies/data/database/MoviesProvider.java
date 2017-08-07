@@ -50,10 +50,11 @@ public class MoviesProvider extends ContentProvider {
                         sortOrder);
                 break;
             case CODE_MOVIE_ID:
+                String id = uri.getLastPathSegment();
                 cursor = moviesDbHelper.getReadableDatabase().query(MovieDbContract.MovieEntry.TABLE_NAME,
                         projection,
                         MovieDbContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
-                        selectionArgs,
+                        new String[]{id},
                         null,
                         null,
                         sortOrder);
@@ -89,7 +90,7 @@ public class MoviesProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        if(resultUri != null) {
+        if (resultUri != null) {
             getContext().getContentResolver().notifyChange(resultUri, null);
         }
 
@@ -100,9 +101,11 @@ public class MoviesProvider extends ContentProvider {
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         int numRowsDeleted;
         switch (uriMatcher.match(uri)) {
-            case CODE_MOVIE:
+            case CODE_MOVIE_ID:
                 numRowsDeleted = moviesDbHelper.getWritableDatabase()
-                        .delete(MovieDbContract.MovieEntry.TABLE_NAME, selection, selectionArgs);
+                        .delete(MovieDbContract.MovieEntry.TABLE_NAME,
+                                MovieDbContract.MovieEntry.COLUMN_MOVIE_ID + " = ?",
+                                new String[]{uri.getLastPathSegment()});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

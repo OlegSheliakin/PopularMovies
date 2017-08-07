@@ -9,7 +9,7 @@ import java.util.List;
 
 import home.oleg.popularmovies.data.ActionWithException;
 import home.oleg.popularmovies.data.entities.MovieResponse;
-import home.oleg.popularmovies.domain.mappers.Mapper;
+import home.oleg.popularmovies.presentation.mappers.Mapper;
 
 /**
  * Created by Oleg on 15.04.2017.

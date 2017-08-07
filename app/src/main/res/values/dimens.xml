@@ -2,7 +2,9 @@
 <resources>
     <dimen name="size_pb">42dp</dimen>
     <dimen name="margin">16dp</dimen>
+    <dimen name="margin_big">24dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_extra_small">4dp</dimen>
     <dimen name="text_size_big">18sp</dimen>
     <dimen name="width_iv_poster">120dp</dimen>
     <dimen name="heigth_iv_poster">180dp</dimen>

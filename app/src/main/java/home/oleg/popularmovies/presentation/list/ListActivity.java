@@ -17,8 +17,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import home.oleg.popularmovies.R;
+import home.oleg.popularmovies.data.CachedMovieRepository;
 import home.oleg.popularmovies.data.network.NetworkMovies;
-import home.oleg.popularmovies.domain.mappers.MovieModelMapper;
+import home.oleg.popularmovies.presentation.mappers.MovieModelMapper;
 import home.oleg.popularmovies.domain.usecases.GetMoviesUseCase;
 import home.oleg.popularmovies.presentation.BasicActivity;
 import home.oleg.popularmovies.presentation.detail.DetailActivity;
@@ -28,6 +29,7 @@ import home.oleg.popularmovies.presentation.list.presenter.ListPresenter;
 import home.oleg.popularmovies.presentation.list.presenter.ListPresenter.Filter;
 import home.oleg.popularmovies.presentation.list.rvadapter.MovieAdapter;
 
+import static home.oleg.popularmovies.presentation.list.presenter.ListPresenter.Filter.FAVOURITE;
 import static home.oleg.popularmovies.presentation.list.presenter.ListPresenter.Filter.POPULAR;
 import static home.oleg.popularmovies.presentation.list.presenter.ListPresenter.Filter.TOP_RATED;
 
@@ -36,8 +38,10 @@ public class ListActivity extends BasicActivity implements SwipeRefreshLayout.On
     public static final String KEY_ITEMS = "items";
     public static final String KEY_FILTER = "filter";
 
-    @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
-    @BindView(R.id.pb_loading_indicator) ProgressBar progressBar;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.pb_loading_indicator)
+    ProgressBar progressBar;
 
     private MovieAdapter adapter;
 
@@ -54,7 +58,17 @@ public class ListActivity extends BasicActivity implements SwipeRefreshLayout.On
     }
 
     @Override
-    protected @LayoutRes Integer getLayoutId() {
+    protected void onResume() {
+        super.onResume();
+        if (filter == FAVOURITE) {
+            presenter.fetchMovies(filter);
+        }
+    }
+
+    @Override
+    protected
+    @LayoutRes
+    Integer getLayoutId() {
         return R.layout.activity_list;
     }
 
@@ -74,10 +88,13 @@ public class ListActivity extends BasicActivity implements SwipeRefreshLayout.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Filter filter = null;
+
         if (item.getItemId() == R.id.menu_item_popular) {
             filter = POPULAR;
         } else if (item.getItemId() == R.id.menu_item_top_rated) {
             filter = TOP_RATED;
+        } else if (item.getItemId() == R.id.menu_item_favourite) {
+            filter = FAVOURITE;
         }
 
         if (this.filter != filter) {
@@ -139,22 +156,25 @@ public class ListActivity extends BasicActivity implements SwipeRefreshLayout.On
     }
 
     private void setupPresenter() {
-        presenter = new ListPresenterImpl(this, new GetMoviesUseCase(NetworkMovies.getInstance()), new MovieModelMapper());
+        presenter = new ListPresenterImpl(
+                this,
+                new GetMoviesUseCase(NetworkMovies.getInstance(), new CachedMovieRepository(this)));
     }
 
     private void checkInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             List<MovieViewModel> list = savedInstanceState.getParcelableArrayList(KEY_ITEMS);
-            if (list != null){
+            if (list != null) {
                 adapter.setItems(list);
             }
 
             Filter filter = Filter.resolve(savedInstanceState.getString(KEY_FILTER));
-            if(filter != null) {
+            if (filter != null) {
                 this.filter = filter;
             }
         } else {
             presenter.fetchMovies(filter);
         }
     }
+
 }

@@ -16,34 +16,19 @@
             android:layout_width="@dimen/width_iv_poster"
             android:layout_height="@dimen/heigth_iv_poster"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/tv_original_title"
+            android:layout_alignParentTop="true"
             android:layout_margin="@dimen/margin_small"
             android:adjustViewBounds="false"
             android:contentDescription="@string/image"
             tools:src="@mipmap/ic_launcher" />
 
         <TextView
-            android:id="@+id/tv_original_title"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/colorPrimary"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="3"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_big"
-            android:textStyle="bold"
-            tools:text="Title" />
-
-        <TextView
             android:id="@+id/tv_release_at"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/iv_poster"
-            android:layout_below="@+id/tv_original_title"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/iv_poster"
             tools:text="Release date: 2017-06-12" />
 
@@ -64,9 +49,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_poster"
-            android:layout_margin="@dimen/margin_small"
-            android:textSize="12sp"
-            android:textStyle="bold"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin"
+            android:layout_marginTop="@dimen/margin_big"
             tools:text="Post synopsis" />
 
         <include

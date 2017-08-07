@@ -61,11 +61,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     public void setItems(List<MovieViewModel> models) {
-        if (!items.containsAll(models)) {
-            items.clear();
-            items.addAll(models);
-            notifyDataSetChanged();
-        }
+        items.clear();
+        items.addAll(models);
+        notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -82,7 +80,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         }
 
         void bind(@NonNull MovieViewModel model) {
-            Picasso.with(context).load(NetworkMovies.IMAGE_URL + model.getImagePath()).into(poster);
+            Picasso.with(context).load(NetworkMovies.IMAGE_URL + model.getW185ImagePath()).into(poster);
             poster.setOnClickListener(view -> clickHandler.onClick(model));
         }
     }
