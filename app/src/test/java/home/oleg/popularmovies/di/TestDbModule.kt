@@ -2,6 +2,7 @@ package home.oleg.popularmovies.di.modules
 
 import android.arch.persistence.room.Room
 import com.beender.android.di.scope.PerApplication
+import com.nhaarman.mockitokotlin2.mock
 import dagger.Module
 import dagger.Provides
 import home.oleg.popularmovies.MovieApplication
@@ -13,15 +14,10 @@ import home.oleg.popularmovies.data.database.MovieDatabase
  */
 
 @Module
-class DbModule {
+class TestDbModule {
 
     @PerApplication
     @Provides
-    fun provideMovieDatabase(application: MovieApplication): MovieDatabase =
-            Room.databaseBuilder(application, MovieDatabase::class.java, MovieDatabase.name)
-                    .build()
-
-    @Provides
-    fun provideMovieDao(database: MovieDatabase): MovieDao = database.getMovieDao()
+    fun provideMovieDao(): MovieDao = mock()
 
 }

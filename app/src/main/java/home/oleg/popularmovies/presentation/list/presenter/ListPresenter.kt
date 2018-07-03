@@ -1,10 +1,8 @@
 package home.oleg.popularmovies.presentation.list.presenter
 
 import home.oleg.popularmovies.domain.MovieRepository
-import home.oleg.popularmovies.domain.entities.Movie
-import home.oleg.popularmovies.domain.usecases.GetMoviesUseCase
 import home.oleg.popularmovies.presentation.list.ListView
-import home.oleg.popularmovies.presentation.model.MovieViewModel
+import home.oleg.popularmovies.presentation.mappers.MovieToMovieViewModelMapper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -16,7 +14,8 @@ import javax.inject.Inject
 
 class ListPresenter @Inject constructor(
         private val disposableBag: CompositeDisposable,
-        private val useCase: GetMoviesUseCase) {
+        private val mapper: MovieToMovieViewModelMapper,
+        private val movieRepository: MovieRepository) {
 
     private var view: ListView? = null
 
@@ -25,10 +24,10 @@ class ListPresenter @Inject constructor(
     }
 
     fun fetchMovies(filter: MovieRepository.Filter) {
-        useCase.execute(filter)
-                .map { it.map(MovieViewModel.Mapper) }
+        movieRepository.getMovies(filter)
+                .map { it.map(mapper) }
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread(), true)
                 .doOnSubscribe { view?.showLoading() }
                 .doFinally { view?.hideLoading() }
                 .subscribe({ view?.fillList(it) }, {

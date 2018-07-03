@@ -9,15 +9,13 @@ import io.reactivex.Observable
  */
 
 interface MovieRepository {
+
     fun getMovies(filter: Filter): Observable<List<Movie>>
-    fun saveAll(models: List<Movie>)
-    fun delete(id: Long)
 
     enum class Filter private constructor(val value: String) {
         TOP_RATED("top_rated"),
         POPULAR("popular"),
         FAVOURITE("favourite");
-
 
         companion object {
             fun resolve(filter: String): Filter {

@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
@@ -37,6 +41,7 @@ ext {
     daggerVersion = '2.11'
     roomsVersion = '1.1.1'
     rxAndroid = '2.0.2'
+    constraintLayoutVersion = '1.1.2'
 }
 
 dependencies {
@@ -50,6 +55,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
     implementation "com.android.support:design:$supportLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
@@ -58,6 +64,7 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     }
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -65,14 +72,15 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$loggingInterceptorVersion"
 
-
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
 
     implementation "android.arch.persistence.room:runtime:$roomsVersion"
     kapt "android.arch.persistence.room:compiler:$roomsVersion"
     implementation "android.arch.persistence.room:rxjava2:$roomsVersion"
 
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1'
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    testImplementation 'com.github.fabioCollini.daggermock:daggermock:0.8.4'
+    testImplementation 'com.github.fabioCollini.daggermock:daggermock-kotlin:0.8.4'
 }
 

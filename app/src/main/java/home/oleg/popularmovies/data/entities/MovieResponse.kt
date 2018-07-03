@@ -6,7 +6,7 @@ import home.oleg.popularmovies.domain.entities.Movie
 
 data class MovieResponse(
         val page: Int? = null,
-        val results: List<Result>? = null,
+        val results: List<Result> = emptyList(),
         val totalResults: Int? = null,
         val totalPages: Int? = null) {
 
@@ -51,24 +51,5 @@ data class MovieResponse(
             @SerializedName(value = "vote_average")
             val voteAverage: Double? = null
     )
-
-    object Mapper : (MovieResponse.Result) -> MovieDbModel {
-        override fun invoke(it: MovieResponse.Result): MovieDbModel {
-            return MovieDbModel(
-                    id = it.id,
-                    adult = it.adult,
-                    backdropPath = it.backdropPath,
-                    originalLanguage = it.originalLanguage,
-                    originalTitle = it.originalTitle,
-                    overview = it.overview,
-                    popularity = it.popularity,
-                    posterPath = it.posterPath,
-                    releaseDate = it.releaseDate,
-                    title = it.title,
-                    video = it.video,
-                    voteAverage = it.voteAverage,
-                    voteCount = it.voteCount)
-        }
-    }
 
 }

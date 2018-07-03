@@ -1,15 +1,13 @@
 package home.oleg.popularmovies.data
 
 import home.oleg.popularmovies.data.database.MovieDao
-import home.oleg.popularmovies.data.database.model.MovieDbModel
-import home.oleg.popularmovies.data.entities.MovieResponse
+import home.oleg.popularmovies.data.mapper.MovieDbModelToMovieMapper
+import home.oleg.popularmovies.data.mapper.MovieResponseToMovieDbMapper
 import home.oleg.popularmovies.data.network.MovieApi
 import home.oleg.popularmovies.domain.MovieRepository
 import home.oleg.popularmovies.domain.entities.Movie
-import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Observable
-import java.util.concurrent.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -18,12 +16,9 @@ import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
         private val movieApi: MovieApi,
-        private val movieDao: MovieDao) : MovieRepository {
-
-    override fun saveAll(models: List<Movie>) {
-        val list = models.map(MovieDbModel.MovieDbModelMapper)
-        return movieDao.insert(list)
-    }
+        private val movieDao: MovieDao,
+        private val toMovieMapper: MovieDbModelToMovieMapper,
+        private val toMovieDbMapper: MovieResponseToMovieDbMapper) : MovieRepository {
 
     override fun getMovies(filter: MovieRepository.Filter): Observable<List<Movie>> {
         val localSource = movieDao.getAll(filter.value)
@@ -32,8 +27,8 @@ class MovieRepositoryImpl @Inject constructor(
 
         val remoteSource = movieApi.getMovies(filter.value)
                 .map { it.results }
-                .map { it.map(MovieResponse.Mapper) }
-
+                .map { it.map(toMovieDbMapper) }
+                .doOnNext { movieDao.insert(it) }
 
         return if (filter == MovieRepository.Filter.FAVOURITE) {
             localSource
@@ -41,11 +36,7 @@ class MovieRepositoryImpl @Inject constructor(
             Observable.mergeDelayError(localSource, remoteSource)
                     .debounce(300, TimeUnit.MILLISECONDS)
 
-        }.map { it.map(MovieDbModel.MovieMapper) }
-    }
-
-    override fun delete(id: Long) {
-        return movieDao.deleteById(id)
+        }.map { it.map(toMovieMapper) }
     }
 
 }
