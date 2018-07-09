@@ -12,7 +12,7 @@ interface MovieRepository {
 
     fun getMovies(filter: Filter): Observable<List<Movie>>
 
-    enum class Filter private constructor(val value: String) {
+    enum class Filter constructor(val value: String) {
         TOP_RATED("top_rated"),
         POPULAR("popular"),
         FAVOURITE("favourite");

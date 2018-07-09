@@ -1,6 +1,8 @@
 package home.oleg.popularmovies.data
 
 import home.oleg.popularmovies.data.database.MovieDao
+import home.oleg.popularmovies.data.database.model.MovieDbModel
+import home.oleg.popularmovies.data.entities.MovieResponse
 import home.oleg.popularmovies.data.mapper.MovieDbModelToMovieMapper
 import home.oleg.popularmovies.data.mapper.MovieResponseToMovieDbMapper
 import home.oleg.popularmovies.data.network.MovieApi
@@ -21,22 +23,28 @@ class MovieRepositoryImpl @Inject constructor(
         private val toMovieDbMapper: MovieResponseToMovieDbMapper) : MovieRepository {
 
     override fun getMovies(filter: MovieRepository.Filter): Observable<List<Movie>> {
-        val localSource = movieDao.getAll(filter.value)
-                .toObservable()
-                .take(1)
-
-        val remoteSource = movieApi.getMovies(filter.value)
-                .map { it.results }
-                .map { it.map(toMovieDbMapper) }
-                .doOnNext { movieDao.insert(it) }
+        val localSource = localSource(filter)
 
         return if (filter == MovieRepository.Filter.FAVOURITE) {
             localSource
         } else {
-            Observable.mergeDelayError(localSource, remoteSource)
-                    .debounce(300, TimeUnit.MILLISECONDS)
+            val remoteSource = remoteSource(filter)
+            Observable.concatArrayEager(localSource, remoteSource).debounce(300, TimeUnit.MILLISECONDS)
 
         }.map { it.map(toMovieMapper) }
+    }
+
+    private fun localSource(filter: MovieRepository.Filter): Observable<List<MovieDbModel>> {
+        return movieDao.getAll(filter.value)
+                .toObservable()
+                .take(1)
+    }
+
+    private fun remoteSource(filter: MovieRepository.Filter): Observable<List<MovieDbModel>> {
+        return movieApi.getMovies(filter.value)
+                .map(MovieResponse::results)
+                .map { it.map(toMovieDbMapper) }
+                .doOnNext(movieDao::insert)
     }
 
 }

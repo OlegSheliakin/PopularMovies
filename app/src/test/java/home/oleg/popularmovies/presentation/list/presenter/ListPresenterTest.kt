@@ -1,6 +1,10 @@
 package home.oleg.popularmovies.presentation.list.presenter
 
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import home.oleg.RxSchedulesRule
 import home.oleg.popularmovies.data.MovieRepositoryImpl
 import home.oleg.popularmovies.data.database.MovieDao
@@ -17,7 +21,7 @@ import io.reactivex.disposables.CompositeDisposable
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.*
 
 /**
  * Created by Oleg Sheliakin on 03.07.2018.
@@ -31,10 +35,9 @@ class ListPresenterTest {
     private lateinit var presenter: ListPresenter
 
     private val view: ListView = mock()
+
     private val movieDao: MovieDao = mock()
-    private val movieApi: MovieApi = mock {
-        on(it.getMovies(any())) doReturn Observable.just(mock())
-    }
+    private val movieApi: MovieApi = mock()
 
     private val movieRepository = MovieRepositoryImpl(
             movieApi,

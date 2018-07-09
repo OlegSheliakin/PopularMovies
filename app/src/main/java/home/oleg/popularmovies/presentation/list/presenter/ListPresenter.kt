@@ -30,7 +30,9 @@ class ListPresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .doOnSubscribe { view?.showLoading() }
                 .doFinally { view?.hideLoading() }
-                .subscribe({ view?.fillList(it) }, {
+                .subscribe({
+                    view?.fillList(it)
+                }, {
                     it.printStackTrace()
                     view?.showError() })
                 .let(disposableBag::add)

@@ -1,18 +1,22 @@
-package home.oleg.popularmovies.presentation.list.presenter
+package home.oleg.popularmovies.presenter
 
-import com.nhaarman.mockitokotlin2.argumentCaptor
+import android.support.test.runner.AndroidJUnit4
 import home.oleg.RxSchedulesRule
+import home.oleg.popularmovies.di.DaggerInstrumentalTestMovieAppComponent
 import home.oleg.popularmovies.domain.MovieRepository
 import home.oleg.popularmovies.presentation.list.ListView
+import home.oleg.popularmovies.presentation.list.presenter.ListPresenter
 import home.oleg.popularmovies.presentation.model.MovieViewModel
 import okhttp3.mockwebserver.MockWebServer
-import org.hamcrest.CoreMatchers
 import org.junit.After
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import java.util.concurrent.*
 import javax.inject.Inject
 
@@ -20,7 +24,8 @@ import javax.inject.Inject
  * Created by Oleg Sheliakin on 03.07.2018.
  * Contact me by email - olegsheliakin@gmail.com
  */
-class ListPresenterTestWithDagger {
+@RunWith(AndroidJUnit4::class)
+class ListPresenterInstrumentalTest {
 
     @get:Rule
     val rxSchedulesRule = RxSchedulesRule()
@@ -38,7 +43,7 @@ class ListPresenterTestWithDagger {
 
     @Before
     fun setUp() {
-        DaggerTestMovieAppComponent.create().inject(this)
+        DaggerInstrumentalTestMovieAppComponent.create().inject(this)
         presenter.attachView(view)
     }
 
@@ -48,35 +53,20 @@ class ListPresenterTestWithDagger {
     }
 
     @Test
-    fun fetchMoviesTopRated() {
+    fun fetchMoviesOnSuccess() {
         val testScheduler = rxSchedulesRule.initWithTestScheduler()
 
         presenter.fetchMovies(MovieRepository.Filter.TOP_RATED)
         testScheduler.advanceTimeBy(400, TimeUnit.MILLISECONDS)
 
-
-        argumentCaptor<List<MovieViewModel>>().run {
-            verify(view, times(1)).fillList(capture())
-            Assert.assertThat(firstValue.size, CoreMatchers.`is`(CoreMatchers.equalTo(movieList.size)))
-        }
-
         verify(view, times(1)).fillList(movieList)
         verify(view, times(1)).showLoading()
         verify(view, times(1)).hideLoading()
     }
 
     @Test
-    fun fetchMoviesPopular() {
+    fun fetchMoviesOnError() {
         presenter.fetchMovies(MovieRepository.Filter.POPULAR)
-
-        verify(view, times(1)).fillList(movieList)
-        verify(view, times(1)).showLoading()
-        verify(view, times(1)).hideLoading()
-    }
-
-    @Test
-    fun fetchMoviesFavourite() {
-        presenter.fetchMovies(MovieRepository.Filter.FAVOURITE)
 
         verify(view, times(1)).fillList(movieList)
         verify(view, times(1)).showLoading()

@@ -1,13 +1,13 @@
-package home.oleg.popularmovies.di.modules
+package home.oleg.popularmovies.di
 
-import android.arch.persistence.room.Room
 import com.beender.android.di.scope.PerApplication
-import com.nhaarman.mockitokotlin2.mock
 import dagger.Module
 import dagger.Provides
-import home.oleg.popularmovies.MovieApplication
 import home.oleg.popularmovies.data.database.MovieDao
-import home.oleg.popularmovies.data.database.MovieDatabase
+import home.oleg.popularmovies.data.database.model.MovieDbModel
+import home.oleg.popularmovies.domain.MovieRepository
+import io.reactivex.Flowable
+import io.reactivex.Single
 
 /**
  * Created by olegshelyakin on 24.08.17.
@@ -18,6 +18,29 @@ class TestDbModule {
 
     @PerApplication
     @Provides
-    fun provideMovieDao(): MovieDao = mock()
+    fun provideMovieDao(listDb: List<MovieDbModel>): MovieDao = object : MovieDao() {
+        override fun get(id: Long): Single<MovieDbModel> {
+            return Single.error(Exception())
+        }
 
+        override fun insert(movie: MovieDbModel) {
+        }
+
+        override fun insert(movies: List<MovieDbModel>) {
+        }
+
+        override fun deleteById(id: Long) {
+        }
+
+        override fun getAll(type: String): Flowable<List<MovieDbModel>> {
+            if (type == MovieRepository.Filter.FAVOURITE.value) {
+                return Flowable.just(listDb)
+            }
+            return Flowable.just(emptyList())
+        }
+
+        override fun clearAll() {
+        }
+
+    }
 }
