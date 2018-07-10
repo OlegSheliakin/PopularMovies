@@ -1,19 +1,18 @@
 package home.oleg.popularmovies.presentation.list.presenter
 
+import DaggerTestMovieAppComponent
 import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import home.oleg.RxSchedulesRule
 import home.oleg.popularmovies.domain.MovieRepository
 import home.oleg.popularmovies.presentation.list.ListView
 import home.oleg.popularmovies.presentation.model.MovieViewModel
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.mockito.Mockito.*
-import java.util.concurrent.*
+import org.junit.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -31,7 +30,7 @@ class ListPresenterTestWithDagger {
     @Inject
     lateinit var presenter: ListPresenter
 
-    private val view: ListView = mock(ListView::class.java)
+    private val view: ListView = mock()
 
     @Inject
     lateinit var movieList: List<MovieViewModel>
@@ -40,6 +39,7 @@ class ListPresenterTestWithDagger {
     fun setUp() {
         DaggerTestMovieAppComponent.create().inject(this)
         presenter.attachView(view)
+        mockWebserver.start()
     }
 
     @After
@@ -53,7 +53,6 @@ class ListPresenterTestWithDagger {
 
         presenter.fetchMovies(MovieRepository.Filter.TOP_RATED)
         testScheduler.advanceTimeBy(400, TimeUnit.MILLISECONDS)
-
 
         argumentCaptor<List<MovieViewModel>>().run {
             verify(view, times(1)).fillList(capture())

@@ -2,9 +2,11 @@ package home.oleg.popularmovies.di
 
 import com.beender.android.di.scope.PerApplication
 import dagger.Component
+import home.oleg.popularmovies.data.database.MovieDao
+import home.oleg.popularmovies.data.database.MovieDaoTest
 import home.oleg.popularmovies.di.modules.RepositoryModule
 import home.oleg.popularmovies.di.modules.RxModule
-import home.oleg.popularmovies.presenter.ListPresenterInstrumentalTest
+import home.oleg.popularmovies.presentation.list.presenter.ListPresenterInstrumentalTest
 
 @PerApplication
 @Component(modules = [
@@ -16,5 +18,6 @@ import home.oleg.popularmovies.presenter.ListPresenterInstrumentalTest
 interface InstrumentalTestMovieAppComponent {
 
     fun inject(target: ListPresenterInstrumentalTest)
+    fun inject(target: MovieDaoTest)
 
 }

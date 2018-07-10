@@ -10,7 +10,7 @@ data class MovieResponse(
         val totalResults: Int? = null,
         val totalPages: Int? = null) {
 
-    class Result(
+    data class Result(
 
             @SerializedName(value = "poster_path")
             val posterPath: String? = null,

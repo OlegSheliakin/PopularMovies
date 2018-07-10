@@ -17,7 +17,4 @@ abstract class MovieDatabase : RoomDatabase() {
 
     abstract fun getMovieDao(): MovieDao
 
-    fun clearDb() {
-        getMovieDao().clearAll()
-    }
 }

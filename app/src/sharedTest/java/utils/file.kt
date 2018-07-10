@@ -1,6 +1,5 @@
 package utils
 
-import java.io.File
 import java.nio.charset.Charset
 
 fun readString(any: Any, fileName: String): String? {

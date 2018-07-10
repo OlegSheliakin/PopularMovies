@@ -1,10 +1,6 @@
 package home.oleg.popularmovies.presentation.list.presenter
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import home.oleg.RxSchedulesRule
 import home.oleg.popularmovies.data.MovieRepositoryImpl
 import home.oleg.popularmovies.data.database.MovieDao
@@ -21,7 +17,7 @@ import io.reactivex.disposables.CompositeDisposable
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.concurrent.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by Oleg Sheliakin on 03.07.2018.
@@ -57,7 +53,7 @@ class ListPresenterTest {
 
         whenever(movieApi.getMovies(any())).thenReturn(
                 Observable.just(MovieResponse()).delay(500, TimeUnit.MILLISECONDS))
-        whenever(movieDao.getAll(any())).thenReturn(Flowable.just(listOf()))
+        whenever(movieDao.getAllByType(any())).thenReturn(Flowable.just(listOf()))
 
         presenter.fetchMovies(MovieRepository.Filter.TOP_RATED)
         testScheduler.advanceTimeBy(400, TimeUnit.MILLISECONDS)

@@ -35,7 +35,7 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     private fun localSource(filter: MovieRepository.Filter): Observable<List<MovieDbModel>> {
-        return movieDao.getAll(filter.value)
+        return movieDao.getAllByType(filter.value)
                 .toObservable()
                 .take(1)
     }

@@ -1,5 +1,6 @@
 import com.beender.android.di.scope.PerApplication
 import dagger.Component
+import home.oleg.popularmovies.data.network.MovieApiTest
 import home.oleg.popularmovies.di.TestDataModule
 import home.oleg.popularmovies.di.TestDbModule
 import home.oleg.popularmovies.di.TestNetworkModule
@@ -17,5 +18,6 @@ import home.oleg.popularmovies.presentation.list.presenter.ListPresenterTestWith
 interface TestMovieAppComponent {
 
     fun inject(target: ListPresenterTestWithDagger)
+    fun inject(target: MovieApiTest)
 
 }

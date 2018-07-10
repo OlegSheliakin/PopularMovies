@@ -27,9 +27,9 @@ abstract class MovieDao {
     abstract fun deleteById(id: Long)
 
     @Query("SELECT * FROM movies WHERE type = :type")
-    abstract fun getAll(type: String): Flowable<List<MovieDbModel>>
+    abstract fun getAllByType(type: String): Flowable<List<MovieDbModel>>
 
-    @Query("DELETE FROM movies")
-    abstract fun clearAll()
+    @Query("SELECT * FROM movies")
+    abstract fun getAll(): Flowable<List<MovieDbModel>>
 
 }
