@@ -58,7 +58,20 @@ class MovieDaoTest {
     }
 
     @Test
-    fun insert_ShouldReplace() {
+    fun update_shouldReplaceOldOne() {
+        val oldMovie = MovieDbModel(0)
+        val newMovie = MovieDbModel(0, posterPath = "url")
+
+        movieDao.insert(oldMovie)
+        movieDao.update(newMovie)
+
+        movieDao.get(0)
+                .test()
+                .assertResult(newMovie)
+    }
+
+    @Test
+    fun insert_shouldIgnoreWhenExist() {
         val oldMovie = MovieDbModel(0)
         val newMovie = MovieDbModel(0, posterPath = "url")
 
@@ -67,7 +80,7 @@ class MovieDaoTest {
 
         movieDao.get(0)
                 .test()
-                .assertResult(newMovie)
+                .assertResult(oldMovie)
     }
 
     @Test
@@ -83,12 +96,12 @@ class MovieDaoTest {
     }
 
     @Test
-    fun getAll_shouldEmitPopular() {
+    fun getAll_shouldEmitPopularMovies() {
         val movies = listOf(
                 MovieDbModel(0, type = MovieRepository.Filter.POPULAR.value),
                 MovieDbModel(1, type = MovieRepository.Filter.TOP_RATED.value))
 
-        val expectedMovies = listOf(MovieDbModel(0, type =  MovieRepository.Filter.POPULAR.value))
+        val expectedMovies = listOf(MovieDbModel(0, type = MovieRepository.Filter.POPULAR.value))
 
         movieDao.insert(movies)
 
@@ -98,4 +111,17 @@ class MovieDaoTest {
                 .assertResult(expectedMovies)
     }
 
+    @Test
+    fun getAll_shouldEmitEmptyList() {
+        val movies = listOf(
+                MovieDbModel(0, type = MovieRepository.Filter.POPULAR.value),
+                MovieDbModel(1, type = MovieRepository.Filter.FAVOURITE.value))
+
+        movieDao.insert(movies)
+
+        movieDao.getAllByType(MovieRepository.Filter.TOP_RATED.value)
+                .take(1)
+                .test()
+                .assertResult(emptyList())
+    }
 }

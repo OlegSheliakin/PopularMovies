@@ -37,6 +37,10 @@ class MovieAdapter @Inject constructor() : RecyclerView.Adapter<MovieAdapter.Vie
         return items.size
     }
 
+    override fun getItemId(position: Int): Long {
+        return items[position].id
+    }
+
     fun setMovies(models: List<MovieViewModel>) {
         this.items = models
         notifyDataSetChanged()

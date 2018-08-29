@@ -17,6 +17,7 @@ import io.reactivex.disposables.CompositeDisposable
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -48,11 +49,10 @@ class ListPresenterTest {
     }
 
     @Test
-    fun fetchMovies() {
+    fun fetchMovies_shouldFillListOnce() {
         val testScheduler = rxSchedulesRule.initWithTestScheduler()
 
-        whenever(movieApi.getMovies(any())).thenReturn(
-                Observable.just(MovieResponse()).delay(500, TimeUnit.MILLISECONDS))
+        whenever(movieApi.getMovies(any())).thenReturn(Observable.just(MovieResponse()))
         whenever(movieDao.getAllByType(any())).thenReturn(Flowable.just(listOf()))
 
         presenter.fetchMovies(MovieRepository.Filter.TOP_RATED)
@@ -62,7 +62,17 @@ class ListPresenterTest {
     }
 
     @Test
-    fun detachView() {
+    fun fetchMovies_shouldFillListTwice() {
+        val testScheduler = rxSchedulesRule.initWithTestScheduler()
+
+        whenever(movieApi.getMovies(any())).thenReturn(
+                Observable.just(MovieResponse()).delay(500, TimeUnit.MILLISECONDS))
+        whenever(movieDao.getAllByType(any())).thenReturn(Flowable.just(listOf()))
+
+        presenter.fetchMovies(MovieRepository.Filter.TOP_RATED)
+        testScheduler.advanceTimeBy(1000, TimeUnit.MILLISECONDS)
+
+        verify(view, times(2)).fillList(listOf())
     }
 
 }

@@ -2,9 +2,9 @@ package home.oleg.popularmovies.di.modules
 
 import dagger.Binds
 import dagger.Module
-import home.oleg.popularmovies.data.FavoriteMoviesRepositoryImpl
+import home.oleg.popularmovies.data.BookmarkMoviesRepositoryImpl
 import home.oleg.popularmovies.data.MovieRepositoryImpl
-import home.oleg.popularmovies.domain.FavoriteMovieRepository
+import home.oleg.popularmovies.domain.BookmarkMovieRepository
 import home.oleg.popularmovies.domain.MovieRepository
 
 /**
@@ -18,5 +18,5 @@ interface RepositoryModule {
     fun provideMoviesRepository(repository: MovieRepositoryImpl): MovieRepository
 
     @Binds
-    fun provideFavoriteMoviesRepository(repository: FavoriteMoviesRepositoryImpl): FavoriteMovieRepository
+    fun provideFavoriteMoviesRepository(repository: BookmarkMoviesRepositoryImpl): BookmarkMovieRepository
 }

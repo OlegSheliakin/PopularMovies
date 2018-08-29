@@ -33,7 +33,6 @@ class MovieApiTest {
 
     @Before
     fun setUp() {
-        Retrofit.Builder().
         DaggerTestMovieAppComponent.create().inject(this)
        // mockWebserver.start()
     }

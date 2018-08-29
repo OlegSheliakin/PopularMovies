@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 
 import home.oleg.popularmovies.R
+import home.oleg.popularmovies.TestService
 import home.oleg.popularmovies.domain.MovieRepository
 import home.oleg.popularmovies.presentation.BasicActivity
 import home.oleg.popularmovies.presentation.detail.DetailActivity
@@ -37,13 +38,13 @@ class ListActivity : BasicActivity(), SwipeRefreshLayout.OnRefreshListener, List
         setupContent()
         presenter.attachView(this)
         checkInstanceState(savedInstanceState)
+
+        startService(Intent(this, TestService::class.java))
     }
 
     override fun onResume() {
         super.onResume()
-        if (filter === MovieRepository.Filter.FAVOURITE) {
-            presenter.fetchMovies(filter)
-        }
+        presenter.fetchMovies(filter)
     }
 
     @LayoutRes
@@ -52,7 +53,6 @@ class ListActivity : BasicActivity(), SwipeRefreshLayout.OnRefreshListener, List
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val elements = adapter.items
-
         outState.putParcelableArrayList(KEY_ITEMS, arrayListOf(*elements.toTypedArray()))
         outState.putString(KEY_FILTER, filter.value)
     }
@@ -80,11 +80,12 @@ class ListActivity : BasicActivity(), SwipeRefreshLayout.OnRefreshListener, List
     }
 
     override fun onRefresh() {
+        stopService(Intent(this, TestService::class.java))
         presenter.fetchMovies(filter)
     }
 
     override fun showLoading() {
-        if (!swipeRefresh.isRefreshing()) {
+        if (!swipeRefresh.isRefreshing) {
             progressBar.visibility = View.VISIBLE
         }
     }
@@ -120,6 +121,7 @@ class ListActivity : BasicActivity(), SwipeRefreshLayout.OnRefreshListener, List
             startActivity(intent)
             Log.d("tapped", it.toString())
         }
+        adapter.setHasStableIds(true)
 
         rvMovies.layoutManager = layoutManager
         rvMovies.adapter = adapter

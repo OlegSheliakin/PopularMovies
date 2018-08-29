@@ -23,7 +23,8 @@ import javax.inject.Inject
 
 class DetailActivity : BasicActivity(), DetailView {
 
-    @Inject lateinit var presenter: DetailPresenter
+    @Inject
+    lateinit var presenter: DetailPresenter
 
     @LayoutRes
     override val layoutId: Int = R.layout.activity_detail
@@ -45,6 +46,10 @@ class DetailActivity : BasicActivity(), DetailView {
             } else {
                 restoreState(savedInstanceState)
             }
+        }
+
+        fabFavourite.setOnClickListener {
+            presenter.onFavouriteClick()
         }
     }
 
@@ -139,10 +144,6 @@ class DetailActivity : BasicActivity(), DetailView {
 
     override fun setFavouriteIcon(@DrawableRes res: Int) {
         fabFavourite.setImageResource(res)
-    }
-
-    fun onFavouriteClick() {
-        presenter.onFavouriteClick()
     }
 
     companion object {

@@ -29,7 +29,6 @@ class DetailPresenter @Inject constructor(
         private val mapperReview: Mapper<List<ReviewViewModel>, List<ReviewResponse.Result>>,
         private val mapperTrailer: Mapper<List<TrailerViewModel>, List<VideosResponse.Result>>) {
 
-
     private var view: DetailView? = null
 
     private var model: MovieViewModel? = null
@@ -101,19 +100,20 @@ class DetailPresenter @Inject constructor(
     }
 
     fun onFavouriteClick() {
-        model?.let {
-            if (it.isFavourite) {
+        model?.let { model ->
+            if (model.isFavourite) {
                 view?.setFavouriteIcon(R.drawable.ic_star_border_black_24dp)
-                it.isFavourite = false
-                interactor.deleteFromFavourite(it.id)
+                model.isFavourite = false
+                interactor.deleteFromFavourite(model.id)
             } else {
-                it.isFavourite = true
+                model.isFavourite = true
                 view?.setFavouriteIcon(R.drawable.ic_star_black_24dp)
-                interactor.addToFavourite(it.id)
-            }
-        }?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({}, { view?.showError() })?.let(disposableBag::add)
+                interactor.addToFavourite(model.id)
+            }.doOnError { model.isFavourite = !model.isFavourite }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({}, { view?.showError() })?.let(disposableBag::add)
+        }
     }
 
     fun detachView() {

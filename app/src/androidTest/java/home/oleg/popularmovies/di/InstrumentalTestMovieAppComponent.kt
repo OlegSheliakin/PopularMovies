@@ -1,8 +1,8 @@
 package home.oleg.popularmovies.di
 
+import TestNetworkModule
 import com.beender.android.di.scope.PerApplication
 import dagger.Component
-import home.oleg.popularmovies.data.database.MovieDao
 import home.oleg.popularmovies.data.database.MovieDaoTest
 import home.oleg.popularmovies.di.modules.RepositoryModule
 import home.oleg.popularmovies.di.modules.RxModule

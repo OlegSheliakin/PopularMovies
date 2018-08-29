@@ -2,9 +2,7 @@ package home.oleg.popularmovies.domain.usecases
 
 import home.oleg.popularmovies.data.entities.ReviewResponse
 import home.oleg.popularmovies.data.entities.VideosResponse
-import home.oleg.popularmovies.domain.FavoriteMovieRepository
-import home.oleg.popularmovies.domain.MovieRepository
-import home.oleg.popularmovies.domain.entities.Movie
+import home.oleg.popularmovies.domain.BookmarkMovieRepository
 import io.reactivex.Completable
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -17,7 +15,7 @@ import javax.inject.Inject
 class DetailInteractor @Inject constructor(
         private val getReviewsUseCase: GetReviewsUseCase,
         private val getTrailersUseCase: GetTrailersUseCase,
-        private val favoriteMovieRepository: FavoriteMovieRepository) {
+        private val favoriteMovieRepository: BookmarkMovieRepository) {
 
     fun fetchReviews(id: Long): Observable<List<ReviewResponse.Result>> {
         return getReviewsUseCase.execute(id)

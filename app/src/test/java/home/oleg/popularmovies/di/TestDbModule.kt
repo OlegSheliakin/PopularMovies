@@ -18,7 +18,14 @@ class TestDbModule {
 
     @PerApplication
     @Provides
-    fun provideMovieDao(listDb: List<MovieDbModel>): MovieDao = object : MovieDao() {
+    fun provideMovieDao(): MovieDao = object : MovieDao() {
+        override fun update(movie: MovieDbModel) {
+
+        }
+
+        override fun getFavourites(): Flowable<List<MovieDbModel>> {
+            return Flowable.just(emptyList())
+        }
 
         override fun getAll(): Flowable<List<MovieDbModel>> {
             return Flowable.just(emptyList())
@@ -38,9 +45,6 @@ class TestDbModule {
         }
 
         override fun getAllByType(type: String): Flowable<List<MovieDbModel>> {
-            if (type == MovieRepository.Filter.FAVOURITE.value) {
-                return Flowable.just(listDb)
-            }
             return Flowable.just(emptyList())
         }
 

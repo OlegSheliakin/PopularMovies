@@ -4,6 +4,7 @@ import com.beender.android.di.scope.PerActivity
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import home.oleg.popularmovies.TestService
 import home.oleg.popularmovies.presentation.detail.DetailActivity
 import home.oleg.popularmovies.presentation.list.ListActivity
 
@@ -21,5 +22,9 @@ interface BuildersModule {
     @PerActivity
     @ContributesAndroidInjector()
     fun provideDetailnActivityFactory(): DetailActivity
+
+    @PerActivity
+    @ContributesAndroidInjector()
+    fun provideTestServiceFactory(): TestService
 
 }

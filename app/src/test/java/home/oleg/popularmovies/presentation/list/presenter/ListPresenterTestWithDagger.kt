@@ -39,7 +39,6 @@ class ListPresenterTestWithDagger {
     fun setUp() {
         DaggerTestMovieAppComponent.create().inject(this)
         presenter.attachView(view)
-        mockWebserver.start()
     }
 
     @After
@@ -77,13 +76,9 @@ class ListPresenterTestWithDagger {
     fun fetchMoviesFavourite() {
         presenter.fetchMovies(MovieRepository.Filter.FAVOURITE)
 
-        verify(view, times(1)).fillList(movieList)
+        verify(view, times(1)).fillList(emptyList())
         verify(view, times(1)).showLoading()
         verify(view, times(1)).hideLoading()
-    }
-
-    @Test
-    fun detachView() {
     }
 
 }

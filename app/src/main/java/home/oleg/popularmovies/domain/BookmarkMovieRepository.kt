@@ -2,7 +2,7 @@ package home.oleg.popularmovies.domain
 
 import io.reactivex.Completable
 
-interface FavoriteMovieRepository {
+interface BookmarkMovieRepository {
 
     fun addFavorite(id: Long): Completable
 

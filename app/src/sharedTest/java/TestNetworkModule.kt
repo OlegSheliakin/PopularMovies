@@ -1,5 +1,3 @@
-package home.oleg.popularmovies.di
-
 import com.beender.android.di.scope.PerApplication
 import com.google.gson.Gson
 import dagger.Module

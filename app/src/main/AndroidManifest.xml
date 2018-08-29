@@ -26,6 +26,7 @@
             android:name=".presentation.detail.DetailActivity"
             android:parentActivityName=".presentation.list.ListActivity" />
 
+        <service android:name=".TestService" />
     </application>
 
 </manifest>

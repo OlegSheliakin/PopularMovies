@@ -49,7 +49,7 @@ class TestDataModule {
     fun provideMovies(
             listDto: List<Movie>,
             movieViemodelMapper: MovieToMovieViewModelMapper): List<MovieViewModel> {
-        return listDto.map(movieViemodelMapper)
+        return listDto.map(movieViemodelMapper).sortedBy { it.id }
     }
 
 }

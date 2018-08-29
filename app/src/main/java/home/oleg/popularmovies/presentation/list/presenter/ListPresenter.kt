@@ -3,9 +3,11 @@ package home.oleg.popularmovies.presentation.list.presenter
 import home.oleg.popularmovies.domain.MovieRepository
 import home.oleg.popularmovies.presentation.list.ListView
 import home.oleg.popularmovies.presentation.mappers.MovieToMovieViewModelMapper
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.*
 import javax.inject.Inject
 
 /**
@@ -21,6 +23,17 @@ class ListPresenter @Inject constructor(
 
     fun attachView(view: ListView) {
         this.view = view
+
+        /*Observable.interval(5000, TimeUnit.MILLISECONDS).flatMap {
+            movieRepository.getMovies(MovieRepository.Filter.TOP_RATED)
+
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread(), true)
+                .subscribe({
+                }, {
+                    it.printStackTrace()
+                })
+                .let(disposableBag::add)*/
     }
 
     fun fetchMovies(filter: MovieRepository.Filter) {
@@ -34,7 +47,8 @@ class ListPresenter @Inject constructor(
                     view?.fillList(it)
                 }, {
                     it.printStackTrace()
-                    view?.showError() })
+                    view?.showError()
+                })
                 .let(disposableBag::add)
     }
 
